@@ -9,5 +9,7 @@ CREATE TABLE `products` (
   `selling_price` BIGINT,
   `description` VARCHAR(255),
   `photo` VARCHAR(255),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (id)
 )
