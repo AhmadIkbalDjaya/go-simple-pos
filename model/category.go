@@ -1,10 +1,20 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+)
 
 type Category struct {
-	ID        int64  `gorm:"primary_key;column:id;autoIncrement"`
-	Name      string `gorm:"column:name"`
+	ID        uuid.UUID  	`gorm:"type:uuid,primary_key;column:id"`
+	Name      string 			`gorm:"column:name"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
+}
+
+func (category *Category) BeforeCreate(db *gorm.DB) error {
+	category.ID = uuid.New()
+	return nil
 }

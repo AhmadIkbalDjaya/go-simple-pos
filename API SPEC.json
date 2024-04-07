@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "title": "Go Simple POS API",
+    "title": "Go Simple POS",
     "version": "1.0"
   },
   "servers": [{ "url": "https://127.0.0.1:3000/api" }],
@@ -228,31 +228,35 @@
     "parameters": {
       "pagePagination": {
         "name": "page",
-        "in": "path",
+        "in": "query",
         "description": "Page Number",
         "required": false,
         "schema": {
           "type": "integer",
+          "default": 1,
           "example": 1
         }
       },
       "perpagePagination": {
         "name": "perpage",
-        "in": "path",
+        "in": "query",
         "description": "Items per page",
         "required": false,
         "schema": {
           "type": "integer",
+          "default": 10,
           "example": 10
         }
       },
       "search": {
         "name": "search",
-        "in": "path",
+        "in": "query",
         "description": "Search Keyword",
         "required": false,
         "schema": {
-          "type": "string"
+          "type": "string",
+          "default": "",
+          "example": ""
         }
       },
       "categoryId": {
@@ -271,13 +275,16 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "number"
+            "type": "integer",
+            "example": 200
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "example": "OK"
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "example": "Success"
           }
         }
       },
