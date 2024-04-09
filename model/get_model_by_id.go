@@ -10,7 +10,7 @@ import (
 )
 
 type Models interface {
-	Category
+	Category | Product
 }
 
 func GetModelById[T Models](ctx *fiber.Ctx, model *T, param string) (error) {

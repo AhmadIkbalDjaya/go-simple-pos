@@ -1,9 +1,6 @@
 package categorycontroller
 
 import (
-	"math"
-	"strconv"
-
 	"github.com/AhmadIkbalDjaya/go-simple-pos/app"
 	"github.com/AhmadIkbalDjaya/go-simple-pos/model"
 	"github.com/AhmadIkbalDjaya/go-simple-pos/model/api"
@@ -12,32 +9,18 @@ import (
 )
 
 func Index(ctx *fiber.Ctx) error {
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
-	perpage, _ := strconv.Atoi(ctx.Query("perpage", "10"))
-	search := ctx.Query("search", "")
-
-	var totalItems int64
 	query := app.DB.Model(&model.Category{})
-	if search != "" {
-		query = query.Where("name LIKE ?", "%"+search+"%")
-	}
-	query.Count(&totalItems)
-	totalPage := int(math.Ceil(float64(totalItems)/float64(perpage)))
-
-	offset := (page-1) * perpage
 	categories := []model.Category{}
-	query.Offset(offset).Limit(perpage).Find(&categories)
+	var metaPaginate api.MetaPaginate
+
+	model.PaginateModel(ctx, query, &categories, &metaPaginate)
+
 	return ctx.Status(fiber.StatusOK).JSON(api.PaginateResponse{
 		Code: fiber.StatusOK,
 		Status: "OK",
 		Message: "Success Get All Category",
 		Data: category.ToCategoryResponses(categories),
-		Meta: api.MetaPaginate{
-			Page: page,
-			Perpage: perpage,
-			TotalPage: totalPage,
-			TotalItem: int(totalItems),
-		},
+		Meta: metaPaginate,
 	})
 }
 
@@ -63,16 +46,16 @@ func Create(ctx *fiber.Ctx) error {
 		return err
 	}
 	
-	Newcategory := category.CategoryRequestToCategory(categoryRequest)
-	err = app.DB.Create(&Newcategory).Error
+	newcategory := category.CategoryRequestToCategory(categoryRequest)
+	err = app.DB.Create(&newcategory).Error
 	if err != nil {
 		return nil
 	}
 	return ctx.Status(fiber.StatusOK).JSON(api.BaseResponse{
 		Code: fiber.StatusOK,
 		Status: "OK",
-		Message: "Success Get All Category",
-		Data: category.ToCategoryResponse(Newcategory),
+		Message: "Success Create Category",
+		Data: category.ToCategoryResponse(newcategory),
 	})
 }
 
@@ -90,9 +73,13 @@ func Update(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	findCategory.Name = categoryRequest.Name
+	// findCategory.Name = categoryRequest.Name
 
-	err = app.DB.Save(&findCategory).Error
+	updateCategory := category.CategoryRequestToCategory(categoryRequest)
+	// updateCategory.ID = findCategory.ID
+
+	// err = app.DB.Save(&updateCategory).Error
+	err = app.DB.Model(&findCategory).Updates(updateCategory).Error
 	if err != nil {
 		return err
 	}

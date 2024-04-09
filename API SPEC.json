@@ -222,6 +222,201 @@
           }
         }
       }
+    },
+    "/products": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "List All Product",
+        "description": "List All Product",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/pagePagination"
+          },
+          {
+            "$ref": "#/components/parameters/perpagePagination"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success Get All Product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Product"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "$ref": "#/components/schemas/MetaPagination"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Product"],
+        "summary": "Create Product",
+        "description": "Create New Product",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Create Category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/Product"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{product_id}": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get Product",
+        "description": "Get Product By Id",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/productId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success Get Product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/Product"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Product"],
+        "summary": "Edit Product",
+        "description": "Edit Product By Id",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/productId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Edit Product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/Product"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Product"],
+        "summary": "Delete Product",
+        "description": "Delete Product By Id",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/productId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success Delete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -262,11 +457,21 @@
       "categoryId": {
         "name": "category_id",
         "in": "path",
-        "description": "Id Category",
+        "description": "Category Id",
         "required": true,
         "schema": {
           "type": "string",
-          "example": "1"
+          "example": "uuid"
+        }
+      },
+      "productId": {
+        "name": "product_id",
+        "in": "path",
+        "description": "Product Id",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "uuid"
         }
       }
     },
@@ -318,12 +523,97 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "number",
-            "example": 1
+            "type": "string",
+            "example": "uuid"
           },
           "name": {
             "type": "string",
             "example": "Eletronik"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "uuid"
+          },
+          "code": {
+            "type": "string",
+            "example": "P001"
+          },
+          "name": {
+            "type": "string",
+            "example": "Indomie Soto"
+          },
+          "unit": {
+            "type": "string",
+            "example": "Kardus"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "stock": {
+            "type": "integer",
+            "example": 125
+          },
+          "purchase_price": {
+            "type": "number",
+            "example": 10.0
+          },
+          "selling_price": {
+            "type": "number",
+            "example": 12.0
+          },
+          "description": {
+            "type": "string",
+            "example": "Product Description"
+          },
+          "photo": {
+            "type": "string",
+            "example": "https://127.0.0.1/images/P001.jpg"
+          }
+        }
+      },
+      "ProductRequest": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "P001"
+          },
+          "name": {
+            "type": "string",
+            "example": "Indomie Soto"
+          },
+          "unit": {
+            "type": "string",
+            "example": "Kardus"
+          },
+          "category_id": {
+            "type": "string",
+            "example": "uuid"
+          },
+          "stock": {
+            "type": "integer",
+            "example": 125
+          },
+          "purchase_price": {
+            "type": "number",
+            "example": 10.0
+          },
+          "selling_price": {
+            "type": "number",
+            "example": 12.0
+          },
+          "description": {
+            "type": "string",
+            "example": "Product Description"
+          },
+          "photo": {
+            "type": "string",
+            "example": "https://127.0.0.1/images/P001.jpg"
           }
         }
       }
