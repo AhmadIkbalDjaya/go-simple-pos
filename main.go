@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/AhmadIkbalDjaya/go-simple-pos/exception"
-	"github.com/AhmadIkbalDjaya/go-simple-pos/route"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/routes"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -11,7 +11,7 @@ func main() {
 		ErrorHandler: exception.ErrorHandler,
 	})
 	
-	route.SetUpRoute(app)
+	routes.SetUpRoutes(app)
 	
 	app.Listen(":3000")
 }

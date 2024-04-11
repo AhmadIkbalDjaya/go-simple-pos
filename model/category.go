@@ -8,11 +8,15 @@ import (
 )
 
 type Category struct {
-	ID        uuid.UUID  	`gorm:"type:uuid;primary_key;column:id"`
+	ID        uuid.UUID  	`gorm:"primary_key;column:id"`
 	Name      string 			`gorm:"column:name"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	CreatedAt time.Time		`gorm:"column:created_at;autoCreateTime;"`
+	UpdatedAt time.Time		`gorm:"column:updated_at;autoCreateTime;autoUpdateTime"`
 	Products	[]Product		`grom:"foreignKey:category_id;references:id"`
+}
+
+func (category *Category) TableName() string {
+	return "categories"
 }
 
 func (category *Category) BeforeCreate(db *gorm.DB) error {

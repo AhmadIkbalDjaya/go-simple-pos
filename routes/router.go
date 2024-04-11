@@ -1,11 +1,11 @@
-package route
+package routes
 
 import (
 	categorycontroller "github.com/AhmadIkbalDjaya/go-simple-pos/controller/category_controller"
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetUpRoute(app *fiber.App) {
+func SetUpRoutes(app *fiber.App) {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello World")
 	})
