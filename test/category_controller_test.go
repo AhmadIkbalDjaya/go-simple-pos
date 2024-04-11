@@ -144,6 +144,8 @@ func TestDelete(t *testing.T) {
 	fiberApp := fiber.New()
 	routes.SetUpRoutes(fiberApp)
 
+	categoriesBefore := []model.Category{}
+	app.DB.Find(&categoriesBefore)
 	request := httptest.NewRequest(http.MethodDelete, "/api/categories/" + category1.ID.String(), nil)
 	response, err := fiberApp.Test(request)
 
@@ -159,6 +161,6 @@ func TestDelete(t *testing.T) {
 
 	categories := []model.Category{}
 	app.DB.Find(&categories)
-	assert.Equal(t, 1, len(categories))
+	assert.Equal(t, len(categoriesBefore)-1, len(categories))
 	
 }
