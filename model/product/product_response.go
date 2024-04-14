@@ -2,6 +2,7 @@ package product
 
 import (
 	"github.com/AhmadIkbalDjaya/go-simple-pos/model"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/model/category"
 	"github.com/google/uuid"
 )
 
@@ -10,7 +11,7 @@ type ProductResponse struct {
 	Code          string					`json:"code"`
 	Name          string					`json:"name"`
 	Unit          string					`json:"unit"`
-	Category      model.Category	`json:"category"`
+	Category      category.CategoryResponse	`json:"category"`
 	Stock         int							`json:"stock"`
 	PurchasePrice int64						`json:"purchase_price"`
 	SellingPrice  int64						`json:"selling_price"`
@@ -24,7 +25,7 @@ func ToProductResponse(product model.Product) ProductResponse {
 		Code: product.Code,
 		Name: product.Name,
 		Unit: product.Unit,
-		Category: product.Category,
+		Category: category.ToCategoryResponse(product.Category),
 		Stock: product.Stock,
 		PurchasePrice: product.PurchasePrice,
 		SellingPrice: product.SellingPrice,

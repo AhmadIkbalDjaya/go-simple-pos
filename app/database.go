@@ -21,7 +21,9 @@ func ConnectionDatabase() *gorm.DB {
 
 func SetUpTestDatabase() *gorm.DB {
 	dialect := mysql.Open("root:@tcp(127.0.0.1:3306)/go_simple_pos_test?charset=utf8mb4&parseTime=True&loc=Local")
-	db, err := gorm.Open(dialect, &gorm.Config{})
+	db, err := gorm.Open(dialect, &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 	if err != nil {
 		panic(err)
 	}

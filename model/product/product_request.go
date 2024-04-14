@@ -6,15 +6,15 @@ import (
 )
 
 type ProductRequest struct {
-	Code          string		`validate:"required" json:"code"`
-	Name          string		`validate:"required" json:"name"`
-	Unit          string		`validate:"required" json:"unit"`
-	CategoryId    uuid.UUID	`validate:"required" json:"category"`
-	Stock         int				`validate:"numeric" json:"stock"`
-	PurchasePrice int64			`validate:"numeric" json:"purchase_price"`
-	SellingPrice  int64			`validate:"required,numeric" json:"selling_price"`
-	Description   string		`validate:"" json:"description"`
-	Photo         string		`validate:"" json:"photo"`
+	Code          string		`validate:"required" form:"code"`
+	Name          string		`validate:"required" form:"name"`
+	Unit          string		`validate:"required" form:"unit"`
+	CategoryId    uuid.UUID	`validate:"required" form:"category_id"`
+	Stock         int				`validate:"numeric" form:"stock"`
+	PurchasePrice int64			`validate:"numeric" form:"purchase_price"`
+	SellingPrice  int64			`validate:"required,numeric" form:"selling_price"`
+	Description   string		`validate:"" form:"description"`
+	Photo         string		`validate:"" form:"photo"`
 }
 
 func ProductRequestToProduct(productRequest ProductRequest) model.Product {
