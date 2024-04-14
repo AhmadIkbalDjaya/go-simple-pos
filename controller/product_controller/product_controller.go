@@ -9,7 +9,7 @@ import (
 )
 
 func Index(ctx *fiber.Ctx) error {
-	query := app.DB.Model(&model.Product{})
+	query := app.DB.Model(&model.Product{}).Preload("Category")
 	products := []model.Product{}
 	metaPaginate := api.MetaPaginate{}
 
@@ -26,7 +26,8 @@ func Index(ctx *fiber.Ctx) error {
 
 func Show(ctx *fiber.Ctx) error {
 	var findProduct model.Product
-	err := model.GetModelById(ctx, &findProduct, "Product")
+	query := app.DB.Model(&model.Product{}).Preload("Category")
+	err := model.GetModelById(ctx, &findProduct, "productId", query)
 	if err != nil {
 		return err
 	}
@@ -51,6 +52,7 @@ func Create(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+	app.DB.Preload("Category").Take(&newProduct)
 	return ctx.Status(fiber.StatusOK).JSON(api.BaseResponse{
 		Code: fiber.StatusOK,
 		Status: "OK",
@@ -61,7 +63,8 @@ func Create(ctx *fiber.Ctx) error {
 
 func Update(ctx *fiber.Ctx) error {
 	var findProduct model.Product
-	err := model.GetModelById(ctx, &findProduct, "Product")
+	query := app.DB.Model(&model.Product{}).Preload("Category")
+	err := model.GetModelById(ctx, &findProduct, "productId", query)
 	if err != nil {
 		return err
 	}
@@ -90,7 +93,8 @@ func Update(ctx *fiber.Ctx) error {
 
 func Delete(ctx *fiber.Ctx) error {
 	var findProduct model.Product
-	err := model.GetModelById(ctx, &findProduct, "Product")
+	query := app.DB.Model(&model.Product{}).Preload("Category")
+	err := model.GetModelById(ctx, &findProduct, "productId", query)
 	if err != nil {
 		return err
 	}

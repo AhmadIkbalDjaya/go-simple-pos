@@ -26,7 +26,7 @@ func Index(ctx *fiber.Ctx) error {
 
 func Show(ctx *fiber.Ctx) error {
 	var findCategory model.Category
-	err := model.GetModelById(ctx, &findCategory, "categoryId")
+	err := model.GetModelById(ctx, &findCategory, "categoryId", app.DB)
 	if err != nil {
 		return err
 	}
@@ -61,7 +61,7 @@ func Create(ctx *fiber.Ctx) error {
 
 func Update(ctx *fiber.Ctx) error {
 	var findCategory model.Category
-	err := model.GetModelById(ctx, &findCategory, "categoryId")
+	err := model.GetModelById(ctx, &findCategory, "categoryId", app.DB)
 	if err != nil {
 		return err
 	}
@@ -93,7 +93,7 @@ func Update(ctx *fiber.Ctx) error {
 
 func Delete(ctx *fiber.Ctx) error {
 	var findCategory model.Category
-	err := model.GetModelById(ctx, &findCategory, "categoryId")
+	err := model.GetModelById(ctx, &findCategory, "categoryId", app.DB)
 	if err != nil {
 		return err
 	}
