@@ -9,7 +9,7 @@ type ProductRequest struct {
 	Code          string		`validate:"required" form:"code"`
 	Name          string		`validate:"required" form:"name"`
 	Unit          string		`validate:"required" form:"unit"`
-	CategoryId    uuid.UUID	`validate:"required" form:"category_id"`
+	CategoryId    string		`validate:"required,uuid_rfc4122,exists=categories.id" form:"category_id"`
 	Stock         int				`validate:"numeric" form:"stock"`
 	PurchasePrice int64			`validate:"numeric" form:"purchase_price"`
 	SellingPrice  int64			`validate:"required,numeric" form:"selling_price"`
@@ -22,7 +22,7 @@ func ProductRequestToProduct(productRequest ProductRequest) model.Product {
 		Code: productRequest.Code,
 		Name: productRequest.Name,
 		Unit: productRequest.Unit,
-		CategoryId: productRequest.CategoryId,
+		CategoryId: uuid.MustParse(productRequest.CategoryId),
 		Stock: productRequest.Stock,
 		PurchasePrice: productRequest.PurchasePrice,
 		SellingPrice: productRequest.SellingPrice,

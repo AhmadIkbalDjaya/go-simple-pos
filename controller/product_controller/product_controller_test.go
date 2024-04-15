@@ -125,7 +125,7 @@ func TestCreate(t *testing.T) {
 		Code: "P004",
 		Name: "Otside",
 		Unit: "pcs",
-		CategoryId: category2.ID,
+		CategoryId: category2.ID.String(),
 		Stock: 320,
 		PurchasePrice: 6500,
 		SellingPrice: 8000,
@@ -150,7 +150,7 @@ func TestCreate(t *testing.T) {
 	responseProduct := responseJSON["data"].(map[string]interface{})
 	assert.Equal(t, newProduct.Code, responseProduct["code"])
 	assert.Equal(t, newProduct.Name, responseProduct["name"])
-	assert.Equal(t, newProduct.CategoryId.String(), responseProduct["category"].(map[string]interface{})["id"])
+	assert.Equal(t, newProduct.CategoryId, responseProduct["category"].(map[string]interface{})["id"])
 	assert.Equal(t, category2.Name, responseProduct["category"].(map[string]interface{})["name"])
 	assert.Equal(t, productsCountBefore + 1, productsCountAfter)
 }
@@ -171,7 +171,7 @@ func TestUpdate(t *testing.T) {
 		Code: "P005",
 		Name: "Shippp",
 		Unit: "box",
-		CategoryId: category1.ID,
+		CategoryId: category1.ID.String(),
 		Stock: 500,
 		PurchasePrice: int64(10000),
 		SellingPrice: int64(15000),
