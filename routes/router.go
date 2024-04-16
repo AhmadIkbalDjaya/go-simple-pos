@@ -9,6 +9,7 @@ import (
 
 func SetUpRoutes(app *fiber.App) {
 	myapp.Validate.RegisterValidation("exists", myapp.ExistsColumnInTable)
+	myapp.Validate.RegisterValidation("uniqueRow", myapp.CheckUniqColumnInTable)
 	
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello World")
