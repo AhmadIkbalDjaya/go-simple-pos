@@ -3,6 +3,7 @@ package productcontroller_test
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -187,6 +188,7 @@ func TestUpdate(t *testing.T) {
 	request.Header.Add("Content-type", "application/json")
 
 	response, err := fiberApp.Test(request)
+	fmt.Println(response)
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, response.StatusCode)
 

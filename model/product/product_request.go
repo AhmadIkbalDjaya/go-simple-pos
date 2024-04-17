@@ -7,6 +7,7 @@ import (
 
 type ProductRequest struct {
 	Code          string		`validate:"required,uniqueRow=products.code" form:"code"`
+	// Code          string		`validate:"required,uniqueRow=products.code.code.P005" form:"code"` // update
 	Name          string		`validate:"required" form:"name"`
 	Unit          string		`validate:"required" form:"unit"`
 	CategoryId    string		`validate:"required,uuid_rfc4122,exists=categories.id" form:"category_id"`

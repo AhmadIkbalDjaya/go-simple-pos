@@ -1,15 +1,12 @@
 package routes
 
 import (
-	myapp "github.com/AhmadIkbalDjaya/go-simple-pos/app"
 	categorycontroller "github.com/AhmadIkbalDjaya/go-simple-pos/controller/category_controller"
 	productcontroller "github.com/AhmadIkbalDjaya/go-simple-pos/controller/product_controller"
 	"github.com/gofiber/fiber/v2"
 )
 
 func SetUpRoutes(app *fiber.App) {
-	myapp.Validate.RegisterValidation("exists", myapp.ExistsColumnInTable)
-	myapp.Validate.RegisterValidation("uniqueRow", myapp.CheckUniqColumnInTable)
 	
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello World")

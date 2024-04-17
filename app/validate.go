@@ -8,7 +8,12 @@ import (
 	"github.com/google/uuid"
 )
 
-var Validate *validator.Validate = validator.New()	
+var Validate *validator.Validate = validator.New()
+
+// func SetCustomValidation(validate *validator.Validate)  {
+// 	validate.RegisterValidation("exists", ExistsColumnInTable)
+// 	validate.RegisterValidation("uniqueRow", CheckUniqColumnInTable)
+// }
 
 // format "exists=tableName.columName"
 // tableName[required]
@@ -68,4 +73,9 @@ func CheckUniqColumnInTable(field validator.FieldLevel) bool {
 		return false
 	}
 	return count <= 0
+}
+
+func init()  {
+	Validate.RegisterValidation("exists", ExistsColumnInTable)
+	Validate.RegisterValidation("uniqueRow", CheckUniqColumnInTable)
 }
