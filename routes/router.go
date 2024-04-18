@@ -1,8 +1,8 @@
 package routes
 
 import (
-	categorycontroller "github.com/AhmadIkbalDjaya/go-simple-pos/controller/category_controller"
-	productcontroller "github.com/AhmadIkbalDjaya/go-simple-pos/controller/product_controller"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/app/controllers/categorycontroller"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/app/controllers/productcontroller"
 	"github.com/gofiber/fiber/v2"
 )
 

@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/AhmadIkbalDjaya/go-simple-pos/app"
-	"github.com/AhmadIkbalDjaya/go-simple-pos/model"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models"
 	"github.com/AhmadIkbalDjaya/go-simple-pos/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
@@ -17,17 +17,17 @@ import (
 
 func TestMain(m *testing.M) {
 	app.DB = app.SetUpTestDatabase()
-	app.DB.Migrator().DropTable(&model.Category{})
-	app.DB.AutoMigrate(&model.Category{})
+	app.DB.Migrator().DropTable(&models.Category{})
+	app.DB.AutoMigrate(&models.Category{})
 
 	m.Run()
 
-	app.DB.Migrator().DropTable(&model.Category{})
+	app.DB.Migrator().DropTable(&models.Category{})
 }
 
 func TestIndex(t *testing.T) {
-	app.DB.Create(&model.Category{Name: "Makanan"})
-	app.DB.Create(&model.Category{Name: "Minuman"})
+	app.DB.Create(&models.Category{Name: "Makanan"})
+	app.DB.Create(&models.Category{Name: "Minuman"})
 
 	fiberApp := fiber.New()
 	routes.SetUpRoutes(fiberApp)
@@ -50,10 +50,10 @@ func TestIndex(t *testing.T) {
 }
 
 func TestShow(t *testing.T) {
-	category1 := model.Category{
+	category1 := models.Category{
 		Name: "Makanan",
 	}
-	category2 := model.Category{
+	category2 := models.Category{
 		Name: "Minuman",
 	}
 	app.DB.Create(&category1)
@@ -81,7 +81,7 @@ func TestShow(t *testing.T) {
 }
 
 func TestCreate(t *testing.T) {
-	app.DB.Create(&model.Category{Name: "Perkakas"})
+	app.DB.Create(&models.Category{Name: "Perkakas"})
 	fiberApp := fiber.New()
 	routes.SetUpRoutes(fiberApp)
 	
@@ -105,7 +105,7 @@ func TestCreate(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
-	category1 := model.Category{
+	category1 := models.Category{
 		Name: "Perkakas",
 	}
 	app.DB.Create(&category1)
@@ -132,10 +132,10 @@ func TestUpdate(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	category1 := model.Category{
+	category1 := models.Category{
 		Name: "Makanan",
 	}
-	category2 := model.Category{
+	category2 := models.Category{
 		Name: "Minuman",
 	}
 	app.DB.Create(&category1)
@@ -145,7 +145,7 @@ func TestDelete(t *testing.T) {
 	routes.SetUpRoutes(fiberApp)
 
 	var categoryCountBefore int64
-	app.DB.Model(&model.Category{}).Count(&categoryCountBefore)
+	app.DB.Model(&models.Category{}).Count(&categoryCountBefore)
 	request := httptest.NewRequest(http.MethodDelete, "/api/categories/" + category1.ID.String(), nil)
 	response, err := fiberApp.Test(request)
 
@@ -160,7 +160,7 @@ func TestDelete(t *testing.T) {
 	assert.Equal(t, "Success Delete Category", responseJSON["message"])
 
 	var categoryCountAfter int64
-	app.DB.Model(&model.Category{}).Count(&categoryCountAfter)
+	app.DB.Model(&models.Category{}).Count(&categoryCountAfter)
 	assert.Equal(t, categoryCountBefore - 1, categoryCountAfter)
 	
 }

@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/AhmadIkbalDjaya/go-simple-pos/config"
 	"github.com/AhmadIkbalDjaya/go-simple-pos/exception"
 	"github.com/AhmadIkbalDjaya/go-simple-pos/routes"
-	"github.com/AhmadIkbalDjaya/go-simple-pos/util"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -13,5 +13,5 @@ func main() {
 	})
 	
 	routes.SetUpRoutes(app)
-	app.Listen(":"+util.Config.AppPort)
+	app.Listen(":"+config.Config.AppPort)
 }

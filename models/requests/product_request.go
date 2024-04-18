@@ -1,7 +1,7 @@
-package product
+package requests
 
 import (
-	"github.com/AhmadIkbalDjaya/go-simple-pos/model"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models"
 	"github.com/google/uuid"
 )
 
@@ -18,8 +18,8 @@ type ProductRequest struct {
 	Photo         string		`validate:"" form:"photo"`
 }
 
-func ProductRequestToProduct(productRequest ProductRequest) model.Product {
-	return model.Product{
+func ProductRequestToProduct(productRequest ProductRequest) models.Product {
+	return models.Product{
 		Code: productRequest.Code,
 		Name: productRequest.Name,
 		Unit: productRequest.Unit,

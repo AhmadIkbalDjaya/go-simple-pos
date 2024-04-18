@@ -1,15 +1,16 @@
-package model
+package helper
 
 import (
 	"math"
 	"strconv"
 
-	"github.com/AhmadIkbalDjaya/go-simple-pos/model/api"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models/api"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
-func PaginateModel[T Models](ctx *fiber.Ctx, tx *gorm.DB, models *[]T, metaPaginate *api.MetaPaginate) error {
+func PaginateModel[T models.Models](ctx *fiber.Ctx, tx *gorm.DB, models *[]T, metaPaginate *api.MetaPaginate) error {
 	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 	perpage, _ := strconv.Atoi(ctx.Query("perpage", "10"))
 	search := ctx.Query("search", "")

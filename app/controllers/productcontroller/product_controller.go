@@ -2,32 +2,34 @@ package productcontroller
 
 import (
 	"github.com/AhmadIkbalDjaya/go-simple-pos/app"
-	"github.com/AhmadIkbalDjaya/go-simple-pos/model"
-	"github.com/AhmadIkbalDjaya/go-simple-pos/model/api"
-	"github.com/AhmadIkbalDjaya/go-simple-pos/model/product"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/helper"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models/api"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models/requests"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models/responses"
 	"github.com/gofiber/fiber/v2"
 )
 
 func Index(ctx *fiber.Ctx) error {
-	query := app.DB.Model(&model.Product{}).Preload("Category")
-	products := []model.Product{}
+	query := app.DB.Model(&models.Product{}).Preload("Category")
+	products := []models.Product{}
 	metaPaginate := api.MetaPaginate{}
 
-	model.PaginateModel(ctx, query, &products, &metaPaginate)
+	helper.PaginateModel(ctx, query, &products, &metaPaginate)
 
 	return ctx.Status(fiber.StatusOK).JSON(api.PaginateResponse{
 		Code: fiber.StatusOK,
 		Status: "OK",
 		Message: "Success Get All Product",
-		Data: product.ToProductResponses(products),
+		Data: responses.ToProductResponses(products),
 		Meta: metaPaginate,
 	})
 }
 
 func Show(ctx *fiber.Ctx) error {
-	var findProduct model.Product
-	query := app.DB.Model(&model.Product{}).Preload("Category")
-	err := model.GetModelById(ctx, &findProduct, "productId", query)
+	var findProduct models.Product
+	query := app.DB.Model(&models.Product{}).Preload("Category")
+	err := helper.GetModelById(ctx, &findProduct, "productId", query)
 	if err != nil {
 		return err
 	}
@@ -35,19 +37,19 @@ func Show(ctx *fiber.Ctx) error {
 		Code: fiber.StatusOK,
 		Status: "OK",
 		Message: "Success Get Product",
-		Data: product.ToProductResponse(findProduct),
+		Data: responses.ToProductResponse(findProduct),
 	})
 }
 
 func Create(ctx *fiber.Ctx) error {
-	productRequest := product.ProductRequest{}
+	productRequest := requests.ProductRequest{}
 	ctx.BodyParser(&productRequest)
 	err := app.Validate.Struct(productRequest)
 	if err != nil {
 		return err
 	}
 
-	newProduct := product.ProductRequestToProduct(productRequest)
+	newProduct := requests.ProductRequestToProduct(productRequest)
 	err = app.DB.Create(&newProduct).Error
 	if err != nil {
 		return err
@@ -57,26 +59,26 @@ func Create(ctx *fiber.Ctx) error {
 		Code: fiber.StatusOK,
 		Status: "OK",
 		Message: "Success Create Product",
-		Data: product.ToProductResponse(newProduct),
+		Data: responses.ToProductResponse(newProduct),
 	})
 }
 
 func Update(ctx *fiber.Ctx) error {
-	var findProduct model.Product
-	query := app.DB.Model(&model.Product{}).Preload("Category")
-	err := model.GetModelById(ctx, &findProduct, "productId", query)
+	var findProduct models.Product
+	query := app.DB.Model(&models.Product{}).Preload("Category")
+	err := helper.GetModelById(ctx, &findProduct, "productId", query)
 	if err != nil {
 		return err
 	}
 
-	productRequest := product.ProductRequest{}
+	productRequest := requests.ProductRequest{}
 	ctx.BodyParser(&productRequest)
 	err = app.Validate.Struct(productRequest)
 	if err != nil {
 		return err
 	}
 
-	updateProduct := product.ProductRequestToProduct(productRequest)
+	updateProduct := requests.ProductRequestToProduct(productRequest)
 
 	err = app.DB.Model(&findProduct).Updates(updateProduct).Error
 	if err != nil {
@@ -87,14 +89,14 @@ func Update(ctx *fiber.Ctx) error {
 		Code: fiber.StatusOK,
 		Status: "OK",
 		Message: "Success Update Product",
-		Data: product.ToProductResponse(findProduct),
+		Data: responses.ToProductResponse(findProduct),
 	})
 }
 
 func Delete(ctx *fiber.Ctx) error {
-	var findProduct model.Product
-	query := app.DB.Model(&model.Product{}).Preload("Category")
-	err := model.GetModelById(ctx, &findProduct, "productId", query)
+	var findProduct models.Product
+	query := app.DB.Model(&models.Product{}).Preload("Category")
+	err := helper.GetModelById(ctx, &findProduct, "productId", query)
 	if err != nil {
 		return err
 	}

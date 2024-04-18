@@ -3,8 +3,7 @@ package exception
 import (
 	"errors"
 
-	"github.com/AhmadIkbalDjaya/go-simple-pos/helper"
-	"github.com/AhmadIkbalDjaya/go-simple-pos/model/api"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models/api"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
@@ -34,7 +33,7 @@ func ErrorHandler(ctx *fiber.Ctx, err error) error {
 		errorResponse.Message = err.Model + " Not Found"
 		errorResponse.Errors = err.Error()
 	case validator.ValidationErrors:
-		errorMessages := helper.GetFieldErrors(err)
+		errorMessages := GetFieldErrors(err)
 		errorResponse.Code = fiber.StatusUnprocessableEntity
 		errorResponse.Status = "Unprocessable Content"
 		errorResponse.Message = "Data Is Not Valid"
@@ -42,4 +41,15 @@ func ErrorHandler(ctx *fiber.Ctx, err error) error {
 	}
 	
 	return ctx.Status(errorResponse.Code).JSON(errorResponse)
+}
+
+func GetFieldErrors(err validator.ValidationErrors) map[string][]string {
+	errorMessages := make(map[string][]string)
+		for _, err := range err {
+			field := err.Field()
+			message := err.Tag()
+
+			errorMessages[field] = append(errorMessages[field], message)
+		}
+		return errorMessages;
 }

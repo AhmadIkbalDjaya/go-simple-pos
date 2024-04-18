@@ -1,8 +1,7 @@
-package product
+package responses
 
 import (
-	"github.com/AhmadIkbalDjaya/go-simple-pos/model"
-	"github.com/AhmadIkbalDjaya/go-simple-pos/model/category"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models"
 	"github.com/google/uuid"
 )
 
@@ -11,7 +10,7 @@ type ProductResponse struct {
 	Code          string					`json:"code"`
 	Name          string					`json:"name"`
 	Unit          string					`json:"unit"`
-	Category      category.CategoryResponse	`json:"category"`
+	Category      CategoryResponse	`json:"category"`
 	Stock         int							`json:"stock"`
 	PurchasePrice int64						`json:"purchase_price"`
 	SellingPrice  int64						`json:"selling_price"`
@@ -19,13 +18,13 @@ type ProductResponse struct {
 	Photo         string					`json:"photo"`
 }
 
-func ToProductResponse(product model.Product) ProductResponse {
+func ToProductResponse(product models.Product) ProductResponse {
 	return ProductResponse{
 		ID: product.ID,
 		Code: product.Code,
 		Name: product.Name,
 		Unit: product.Unit,
-		Category: category.ToCategoryResponse(product.Category),
+		Category: ToCategoryResponse(product.Category),
 		Stock: product.Stock,
 		PurchasePrice: product.PurchasePrice,
 		SellingPrice: product.SellingPrice,
@@ -34,7 +33,7 @@ func ToProductResponse(product model.Product) ProductResponse {
 	}
 }
 
-func ToProductResponses(products []model.Product) []ProductResponse {
+func ToProductResponses(products []models.Product) []ProductResponse {
 	var productResponses []ProductResponse
 	for _, product := range products {
 		productResponses = append(productResponses, ToProductResponse(product))

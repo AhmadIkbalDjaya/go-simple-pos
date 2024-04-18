@@ -3,41 +3,40 @@ package productcontroller_test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/AhmadIkbalDjaya/go-simple-pos/app"
-	"github.com/AhmadIkbalDjaya/go-simple-pos/model"
-	"github.com/AhmadIkbalDjaya/go-simple-pos/model/product"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models"
+	"github.com/AhmadIkbalDjaya/go-simple-pos/models/requests"
 	"github.com/AhmadIkbalDjaya/go-simple-pos/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 )
 
-var category1 = model.Category{
+var category1 = models.Category{
 	Name: "Makanan",
 }
-var category2 = model.Category{
+var category2 = models.Category{
 	Name: "Minuman",
 }
 
 func TestMain(m *testing.M) {
 	app.DB = app.SetUpTestDatabase()
-	app.DB.Migrator().DropTable(&model.Category{}, &model.Product{})
-	app.DB.AutoMigrate(&model.Category{}, &model.Product{})
+	app.DB.Migrator().DropTable(&models.Category{}, &models.Product{})
+	app.DB.AutoMigrate(&models.Category{}, &models.Product{})
 	
 	app.DB.Create(&category1)
 	app.DB.Create(&category2)
 
 	m.Run()
 
-	app.DB.Migrator().DropTable(&model.Product{}, &model.Category{})
+	app.DB.Migrator().DropTable(&models.Product{}, &models.Category{})
 }
 
 func TestIndex(t *testing.T) {
-	product1 := model.Product{
+	product1 := models.Product{
 		Code: "P001",
 		Name: "Oreo",
 		Unit: "pcs",
@@ -46,7 +45,7 @@ func TestIndex(t *testing.T) {
 		PurchasePrice: int64(1000),
 		SellingPrice: int64(1500),
 	}
-	product2 := model.Product{
+	product2 := models.Product{
 		Code: "P002",
 		Name: "Fanta",
 		Unit: "pcs",
@@ -80,7 +79,7 @@ func TestIndex(t *testing.T) {
 }
 
 func TestShow(t *testing.T) {
-	product3 := model.Product{
+	product3 := models.Product{
 		Code: "P003",
 		Name: "Fresh Tea",
 		Unit: "pcs",
@@ -120,9 +119,9 @@ func TestCreate(t *testing.T) {
 	routes.SetUpRoutes(fiberApp)
 
 	var productsCountBefore int64
-	app.DB.Model(&model.Product{}).Count(&productsCountBefore)
+	app.DB.Model(&models.Product{}).Count(&productsCountBefore)
 
-	newProduct := product.ProductRequest{
+	newProduct := requests.ProductRequest{
 		Code: "P004",
 		Name: "Otside",
 		Unit: "pcs",
@@ -140,7 +139,7 @@ func TestCreate(t *testing.T) {
 	assert.Equal(t, fiber.StatusOK, response.StatusCode)
 	
 	var productsCountAfter int64
-	app.DB.Model(&model.Product{}).Count(&productsCountAfter)
+	app.DB.Model(&models.Product{}).Count(&productsCountAfter)
 	var responseJSON map[string]interface{}
 	err = json.NewDecoder(response.Body).Decode(&responseJSON)
 	assert.Nil(t, err)
@@ -157,7 +156,7 @@ func TestCreate(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
-	product5 := model.Product{
+	product5 := models.Product{
 		Code: "P005",
 		Name: "Ship",
 		Unit: "pcs",
@@ -168,8 +167,8 @@ func TestUpdate(t *testing.T) {
 	}
 	err := app.DB.Create(&product5).Error
 	assert.Nil(t, err)
-	updateProduct := product.ProductRequest{
-		Code: "P005",
+	updateProduct := requests.ProductRequest{
+		Code: "P0055",
 		Name: "Shippp",
 		Unit: "box",
 		CategoryId: category1.ID.String(),
@@ -188,7 +187,6 @@ func TestUpdate(t *testing.T) {
 	request.Header.Add("Content-type", "application/json")
 
 	response, err := fiberApp.Test(request)
-	fmt.Println(response)
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, response.StatusCode)
 
@@ -204,7 +202,7 @@ func TestUpdate(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	product6 := model.Product{
+	product6 := models.Product{
 		Code: "P006",
 		Name: "Good Day",
 		Unit: "pcs",
@@ -219,7 +217,7 @@ func TestDelete(t *testing.T) {
 	routes.SetUpRoutes(fiberApp)
 
 	var productsCountBefore int64
-	app.DB.Model(&model.Product{}).Count(&productsCountBefore)
+	app.DB.Model(&models.Product{}).Count(&productsCountBefore)
 
 	request := httptest.NewRequest(http.MethodDelete, "/api/products/" + product6.ID.String(), nil)
 	response, err := fiberApp.Test(request)
@@ -234,7 +232,7 @@ func TestDelete(t *testing.T) {
 	assert.Equal(t, "Success Delete Product", responseJSON["message"])
 
 	var productsCountAfter int64
-	app.DB.Model(&model.Product{}).Count(&productsCountAfter)
+	app.DB.Model(&models.Product{}).Count(&productsCountAfter)
 	assert.Equal(t, productsCountBefore - 1 , productsCountAfter)
 	
 	
