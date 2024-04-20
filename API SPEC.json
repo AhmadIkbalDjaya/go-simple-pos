@@ -8,7 +8,7 @@
   "paths": {
     "/categories": {
       "get": {
-        "tags": ["Category"],
+        "tags": ["Master Data"],
 
         "summary": "List All Category",
         "description": "List All Category",
@@ -55,7 +55,7 @@
         }
       },
       "post": {
-        "tags": ["Category"],
+        "tags": ["Master Data"],
         "summary": "Create Category",
         "description": "Create New Category",
         "requestBody": {
@@ -103,15 +103,22 @@
       }
     },
     "/categories/{category_id}": {
+      "parameters": [
+        {
+          "name": "category_id",
+          "in": "path",
+          "description": "Category Id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "uuid"
+          }
+        }
+      ],
       "get": {
-        "tags": ["Category"],
+        "tags": ["Master Data"],
         "summary": "Get Category",
         "description": "Get Category By Id",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/categoryId"
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success Get Category",
@@ -138,14 +145,9 @@
         }
       },
       "put": {
-        "tags": ["Category"],
+        "tags": ["Master Data"],
         "summary": "Edit Category",
         "description": "Edit Category By Id",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/categoryId"
-          }
-        ],
         "requestBody": {
           "description": "New Name Of Category",
           "required": true,
@@ -189,14 +191,9 @@
         }
       },
       "delete": {
-        "tags": ["Category"],
+        "tags": ["Master Data"],
         "summary": "Delete Category",
         "description": "Delete Category By Id",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/categoryId"
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success Delete Category",
@@ -225,7 +222,7 @@
     },
     "/products": {
       "get": {
-        "tags": ["Product"],
+        "tags": ["Master Data"],
         "summary": "List All Product",
         "description": "List All Product",
         "parameters": [
@@ -271,7 +268,7 @@
         }
       },
       "post": {
-        "tags": ["Product"],
+        "tags": ["Master Data"],
         "summary": "Create Product",
         "description": "Create New Product",
         "requestBody": {
@@ -309,15 +306,22 @@
       }
     },
     "/products/{product_id}": {
+      "parameters": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "description": "Product Id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "uuid"
+          }
+        }
+      ],
       "get": {
-        "tags": ["Product"],
+        "tags": ["Master Data"],
         "summary": "Get Product",
         "description": "Get Product By Id",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/productId"
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success Get Product",
@@ -343,14 +347,9 @@
         }
       },
       "put": {
-        "tags": ["Product"],
+        "tags": ["Master Data"],
         "summary": "Edit Product",
         "description": "Edit Product By Id",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/productId"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/x-www-form-urlencoded": {
@@ -385,14 +384,9 @@
         }
       },
       "delete": {
-        "tags": ["Product"],
+        "tags": ["Master Data"],
         "summary": "Delete Product",
         "description": "Delete Product By Id",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/productId"
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success Delete",
@@ -407,6 +401,570 @@
                       "properties": {
                         "data": {
                           "type": "object"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/administrators": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get List Administrator",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/pagePagination"
+          },
+          {
+            "$ref": "#/components/parameters/perpagePagination"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          }
+        ],
+        "description": "Get List Of Administrator Users with pagination",
+        "responses": {
+          "200": {
+            "description": "Success Get List administrator",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create Administrator",
+        "description": "Create New Administrator User",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Create New Administrator User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/administrators/{administrator_id}": {
+      "parameters": [
+        {
+          "name": "administrator_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get Administrator",
+        "description": "Get Administrator User By Id",
+        "responses": {
+          "200": {
+            "description": "Success Get Administrator User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Edit Administrator",
+        "description": "Edit Administrator User By Id",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Edit Administrator User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete Administrator",
+        "description": "Delete Administrator User By Id",
+        "responses": {
+          "200": {
+            "description": "Success Edit Administrator User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/leaders": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get List Leaders",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/pagePagination"
+          },
+          {
+            "$ref": "#/components/parameters/perpagePagination"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          }
+        ],
+        "description": "Get List Of Leader Users with pagination",
+        "responses": {
+          "200": {
+            "description": "Success Get List Leader",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create Leader",
+        "description": "Create New Leader User",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Create New Leader User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/leaders/{leader_id}": {
+      "parameters": [
+        {
+          "name": "leader_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get Leader",
+        "description": "Get Leader User By Id",
+        "responses": {
+          "200": {
+            "description": "Success Get Leader User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Edit Leader",
+        "description": "Edit Leader User By Id",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Edit Leader User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete Leader",
+        "description": "Delete Leader User By Id",
+        "responses": {
+          "200": {
+            "description": "Success Edit Leader User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/cashiers": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get List Cashiers",
+        "description": "Get List Of Leader Users with pagination",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/pagePagination"
+          },
+          {
+            "$ref": "#/components/parameters/perpagePagination"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success Get List Cashier",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create Cashier",
+        "description": "Create New Cashier User",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Create New Cashier User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/cashiers/{cashier_id}": {
+      "parameters": [
+        {
+          "name": "cashier_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get Cashier",
+        "description": "Get Cashier User By Id",
+        "responses": {
+          "200": {
+            "description": "Success Get Cashier User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Edit Cashier",
+        "description": "Edit Cashier User By Id",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Edit Cashier User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete Cashier",
+        "description": "Delete Cashier User By Id",
+        "responses": {
+          "200": {
+            "description": "Success Edit Leader User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/BaseResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
                         }
                       }
                     }
@@ -452,26 +1010,6 @@
           "type": "string",
           "default": "",
           "example": ""
-        }
-      },
-      "categoryId": {
-        "name": "category_id",
-        "in": "path",
-        "description": "Category Id",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "example": "uuid"
-        }
-      },
-      "productId": {
-        "name": "product_id",
-        "in": "path",
-        "description": "Product Id",
-        "required": true,
-        "schema": {
-          "type": "string",
-          "example": "uuid"
         }
       }
     },
@@ -576,6 +1114,27 @@
           }
         }
       },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "user1"
+          },
+          "username": {
+            "type": "string",
+            "example": "username1"
+          },
+          "photo": {
+            "type": "string",
+            "example": "https://127.0.0.1/images/P001.jpg"
+          }
+        }
+      },
       "ProductRequest": {
         "type": "object",
         "properties": {
@@ -614,6 +1173,24 @@
           "photo": {
             "type": "string",
             "example": "https://127.0.0.1/images/P001.jpg"
+          }
+        }
+      },
+      "UserRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string",
+            "format": "binary"
           }
         }
       }
